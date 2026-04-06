@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #111;
+    padding: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 88px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 1200px) {
+    .slide {
+      transform: scale(0.48);
+      transform-origin: top left;
+      margin-bottom: -660px;
+      margin-right: -562px;
+    }
+  }
+
+  .handle {
+    position: absolute;
+    bottom: 64px;
+    left: 88px;
+    font-size: 24px;
+    color: rgba(255,255,255,0.25);
+    font-weight: 600;
+  }
+  .handle-dark {
+    position: absolute;
+    bottom: 64px;
+    left: 88px;
+    font-size: 24px;
+    color: rgba(0,0,0,0.3);
+    font-weight: 600;
+  }
+
+  /* ===== CAPA COM FOTO ===== */
+  .s1 {
+    justify-content: flex-end;
+    background: #0A0A0A;
+  }
+  .s1 .photo-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('fotos/foto-338_3513720_261297.jpg');
+    background-size: cover;
+    background-position: center 20%;
+  }
+  .s1 .photo-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.97) 0%,
+      rgba(0,0,0,0.97) 38%,
+      rgba(0,0,0,0.7) 58%,
+      rgba(0,0,0,0.2) 100%
+    );
+  }
+  .s1 .content {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 48px;
+  }
+  .s1 .tag {
+    display: inline-block;
+    background: #F0A500;
+    color: #000;
+    font-size: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    margin-bottom: 36px;
+    width: fit-content;
+  }
+  .s1 h1 {
+    font-size: 76px;
+    font-weight: 900;
+    color: #FFF;
+    line-height: 1.08;
+    margin-bottom: 32px;
+  }
+  .s1 h1 em { color: #F0A500; font-style: normal; }
+  .s1 .sub {
+    font-size: 28px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.65;
+    max-width: 820px;
+    margin-bottom: 48px;
+  }
+  .s1 .loop {
+    font-size: 28px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  /* ===== SLIDES DE CONTEÚDO ===== */
+  .sc {
+    background: #0A0A0A;
+    justify-content: center;
+  }
+  .sc .accent-left {
+    position: absolute;
+    top: 0; left: 0;
+    width: 8px; height: 100%;
+    background: #141414;
+  }
+  .sc h2 {
+    font-size: 60px;
+    font-weight: 900;
+    color: #FFF;
+    line-height: 1.13;
+    margin-bottom: 44px;
+  }
+  .sc h2 em { color: #F0A500; font-style: normal; }
+  .sc p {
+    font-size: 31px;
+    color: #888;
+    line-height: 1.68;
+    max-width: 880px;
+  }
+  .sc p strong { color: #FFF; font-weight: 700; }
+  .sc .handle { color: #232323; }
+
+  .sc .loop {
+    margin-top: 52px;
+    font-size: 28px;
+    color: #555;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .sc .box {
+    background: #141414;
+    border-left: 6px solid #F0A500;
+    border-radius: 4px;
+    padding: 36px 40px;
+    margin-top: 40px;
+  }
+  .sc .box .box-label {
+    font-size: 19px; color: #F0A500; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px;
+  }
+  .sc .box p { font-size: 30px; color: #CCC; }
+  .sc .box p strong { color: #FFF; }
+
+  .sc ul { list-style: none; }
+  .sc ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .sc ul li .dot {
+    min-width: 42px; height: 42px;
+    background: #E03E3E;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 900; color: #FFF;
+    margin-top: 3px;
+  }
+  .sc ul li span { font-size: 30px; color: #888; line-height: 1.55; }
+  .sc ul li span strong { color: #FFF; }
+
+  /* ===== CTA COM FOTO ===== */
+  .scta {
+    background: #F0A500;
+    justify-content: center;
+  }
+  .scta .profile {
+    width: 136px;
+    height: 136px;
+    border-radius: 50%;
+    background-image: url('fotos/foto-338_3513720_261297.jpg');
+    background-size: cover;
+    background-position: center 10%;
+    border: 5px solid #000;
+    margin-bottom: 40px;
+    flex-shrink: 0;
+  }
+  .scta h2 {
+    font-size: 60px; font-weight: 900;
+    color: #000; line-height: 1.1;
+    margin-bottom: 32px;
+  }
+  .scta p {
+    font-size: 28px; color: rgba(0,0,0,0.65); font-weight: 500;
+    line-height: 1.65; margin-bottom: 52px;
+    max-width: 860px;
+  }
+  .scta .keyword {
+    display: inline-block;
+    background: #000; color: #F0A500;
+    font-size: 36px; font-weight: 900;
+    padding: 22px 56px; border-radius: 8px;
+    letter-spacing: 5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="slide s1">
+  <div class="photo-bg"></div>
+  <div class="content">
+    <div class="tag">Marketing Digital</div>
+    <h1>Ela fatura 80k<br>por mês, tira<br><em>64k de lucro</em><br>e ainda reclama</h1>
+    <p class="sub">Uma cliente chegou querendo escalar.<br>Eu mostrei o número que ela estava ignorando.</p>
+    <p class="loop">Qual era o número?</p>
+  </div>
+  <span class="handle">@matheusjorel</span>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide sc">
+  <div class="accent-left"></div>
+  <h2>O cenário<br>dela era esse</h2>
+  <p>Faturamento: <strong>R$ 80.000/mês</strong><br>
+  Lucro: <strong>R$ 64.000/mês</strong><br>
+  Time: <strong>1 pessoa</strong><br>
+  Ações de marketing: <strong>zero</strong><br><br>
+  Margem de lucro de <strong>80%</strong>.<br>
+  E ela achava que o negócio era pequeno.</p>
+  <p class="loop">Por que ela achava isso?</p>
+  <span class="handle" style="color:#232323">@matheusjorel</span>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide sc">
+  <div class="accent-left"></div>
+  <h2>Ela ficava<br>olhando pra<br><em>quem fatura 3M</em></h2>
+  <p>Lançamentos de 7 dígitos.<br>
+  Guru com plaquinha.<br>
+  Time de 10 pessoas.<br><br>
+  E a sensação era de que o negócio dela<br>
+  <strong>não estava no mesmo nível.</strong></p>
+  <p class="loop">Só que tem um número que muda tudo.</p>
+  <span class="handle" style="color:#232323">@matheusjorel</span>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide sc">
+  <div class="accent-left"></div>
+  <h2>A margem dos<br>grandes negócios<br>na Hotmart é <em>25%</em></h2>
+  <p>Para ter <strong>R$ 64k de lucro</strong> com essa margem,<br>
+  o faturamento precisaria ser:</p>
+  <div class="box">
+    <div class="box-label">Conta real</div>
+    <p><strong>R$ 256.000 por mês</strong> de faturamento<br>
+    para chegar no mesmo dinheiro no bolso</p>
+  </div>
+  <p class="loop">E tem mais uma coisa que ela estava ignorando.</p>
+  <span class="handle" style="color:#232323">@matheusjorel</span>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide sc">
+  <div class="accent-left"></div>
+  <h2>O lançamento<br>de <em>1 milhão</em><br>que você inveja</h2>
+  <p>Tira de lá:<br><br>
+  <strong>R$ 300k</strong> em tráfego pago<br>
+  <strong>R$ 50k</strong> de folha de pagamento<br>
+  Imposto, plataforma, gateway...<br><br>
+  O lucro final pode ser igual ao seu.<br>
+  <strong>Com muito mais estresse e risco.</strong></p>
+  <p class="loop">O problema não era o faturamento.</p>
+  <span class="handle" style="color:#232323">@matheusjorel</span>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide sc">
+  <div class="accent-left"></div>
+  <h2>Você está<br>comparando<br><em>coisas diferentes</em></h2>
+  <ul>
+    <li><div class="dot">✕</div><span>Lucro com <strong>faturamento bruto</strong></span></li>
+    <li><div class="dot">✕</div><span>Patrimônio construído com <strong>plaquinha de palco</strong></span></li>
+    <li><div class="dot">✕</div><span>Operação enxuta com <strong>empresa de 10 pessoas</strong></span></li>
+  </ul>
+  <p class="loop">Talvez você já tenha o que quer.</p>
+  <span class="handle" style="color:#232323">@matheusjorel</span>
+</div>
+
+<!-- CTA -->
+<div class="slide scta">
+  <div class="profile"></div>
+  <h2>Quer ver o vídeo<br>completo sobre<br>esse caso?</h2>
+  <p>Manda a palavra abaixo nos comentários<br>
+  e eu te envio o link direto no YouTube.</p>
+  <div class="keyword">LUCRO</div>
+  <span class="handle-dark">@matheusjorel</span>
+</div>
+
+</body>
+</html>

@@ -1,14 +1,39 @@
-# Claude Code OS — Kit Ratos de IA
+# Matozo — Claude Code OS
 
-Este repositório é o kit de boas-vindas do curso Claude Code OS.
+## O que é esse workspace
+Workspace principal do Matheus Jorel — CMO as a Service, especialista em webinars e infoprodutos. Centraliza os projetos ativos (LBR, Wizoom Play, marca pessoal) e serve como base de operação da Matozo.
 
-Se você acabou de clonar esse repositório:
-1. Rode `/setup` pra configurar o sistema pro seu negócio (uns 5 minutos)
-2. Depois rode `/mapear` pra criar skills personalizadas pro que você faz no dia a dia
+**Estrutura de pastas:**
+- `clientes/` — um diretório por cliente com briefing, estratégia e entregas
+- `projetos-proprios/` — produtos digitais, canal YouTube, marca pessoal
+- `_contexto/` — negócio, preferências e foco atual (lidos no início de cada conversa)
+- `marca/` — guias de design por projeto
+- `dados/` — arquivos brutos, exports, referências
+- `templates/skills/` — templates de skills prontos pra personalizar com /mapear
+- `templates/ferramentas/catalogo.md` — APIs e ferramentas disponíveis pra usar em skills
+
+## Sobre o negócio
+Matozo é uma operação de CMO as a Service focada em infoprodutos — cursos e mentorias vendidos via webinar e lançamento pago. Matheus atua como cérebro estratégico dos projetos: cuida de funil, tráfego, copy e métricas. Ao mesmo tempo, é creator e tem produtos próprios.
+
+## O que mais fazemos aqui
+- Planejamento e execução de lançamentos pagos
+- Estruturação de funis (low ticket → webinar → high ticket)
+- Copy: páginas, anúncios, VSLs, roteiros de webinar
+- Gestão de tráfego (Meta Ads + Google Ads)
+- Análise de métricas (ROAS, CPA, CAC, LTV)
+- Criação de conteúdo (YouTube e Instagram)
+- Estratégia e liderança de projetos como CMO
+
+## Clientes e contexto
+Atende clientes externos (advogados, médicos, experts, infoprodutores com 1M+/ano) e desenvolve projetos próprios. Modelo de entrega: CMO as a Service — Matheus assume a cadeira estratégica de marketing nos projetos.
+
+## Tom de voz
+Casual, direto e estratégico. Sem enrolação. Vai direto ao ponto, usa analogias pra explicar, não agrada sem critério. Respostas curtas quando possível, longas só quando necessário.
+
+## Ferramentas conectadas
+Meta Ads, Google Ads, WordPress + Elementor, HubSpot, ActiveCampaign, ManyChat, Sellflux, Zouti, Memberkit, Devzapp, Google Sheets, WhatsApp, YouTube, Instagram
 
 ---
-
-<!-- Este arquivo será atualizado pelo /setup com o contexto do seu negócio. -->
 
 ## Contexto do negócio
 
@@ -20,7 +45,7 @@ No início de toda conversa, ler os seguintes arquivos (se existirem e estiverem
 
 Usar essas informações como base pra qualquer resposta ou decisão. Ao sugerir prioridades, formatos ou abordagens, considerar o foco atual descrito em `estrategia.md`.
 
-Para qualquer tarefa visual (carrossel, proposta, slide, landing page), consultar `marca/design-guide.md` como referência de estilo.
+Para qualquer tarefa visual (carrossel, proposta, slide, landing page), consultar `marca/design-guide.md` como referência de estilo — e perguntar de qual projeto/cliente é o contexto antes de criar.
 
 Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o contexto naturalmente.
 
