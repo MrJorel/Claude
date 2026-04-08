@@ -127,9 +127,22 @@ Somar para cada funil:
 
 ---
 
+## Verificar campanhas novas antes de executar
+
+Antes de buscar os insights, verificar se há campanhas ativas na conta do funil que não estejam listadas acima:
+
+```bash
+python3 scripts/read.py campaigns --account act_CONTA --fields "id,name,status" --status "ACTIVE"
+```
+
+- Se encontrar campanha com nome claramente relacionado ao funil (ex: "LTP 01", "MAT08", "IEA 02"), incluir nos insights automaticamente e adicionar à lista acima.
+- Se o nome for ambíguo ou não der pra ter certeza, perguntar ao usuário antes de incluir.
+
+---
+
 ## Observações
 
 - Dados do dia atual ficam disponíveis com ~1h de atraso. Ideal preencher na manhã seguinte.
 - Venda Gerenciador ≠ Venda Real. O gerenciador atribui por janela de clique.
-- Quando uma nova campanha for criada, adicionar o ID na lista do funil correspondente acima.
+- Quando confirmar uma nova campanha, adicionar o ID na lista do funil correspondente acima.
 - MAT08 e IEA02 têm histórico desde março — as demais (LTP, PPF) começaram em abril.
