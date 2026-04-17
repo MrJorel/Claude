@@ -63,27 +63,27 @@
     <div class="diff">LTP02 fatura <span class="pos">+R$ 239</span> a mais</div>
   </div>
   <div class="kpi">
-    <div class="label">Investimento em tráfego</div>
-    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">R$ 4.015</span></div>
-    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">R$ 3.895</span></div>
-    <div class="diff">LTP01 gasta <span class="neg">+R$ 120</span> a mais</div>
+    <div class="label">Investimento total (c/ imposto)</div>
+    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">R$ 4.517</span></div>
+    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">R$ 4.382</span></div>
+    <div class="diff">Imposto Meta: LTP01 R$502 · LTP02 R$487</div>
   </div>
   <div class="kpi">
     <div class="label">Lucro bruto</div>
-    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">R$ 2.657</span></div>
-    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">R$ 3.016</span></div>
-    <div class="diff">LTP02 lucra <span class="pos">+R$ 359</span> a mais</div>
+    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">R$ 2.155</span></div>
+    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">R$ 2.530</span></div>
+    <div class="diff">LTP02 lucra <span class="pos">+R$ 375</span> a mais</div>
   </div>
   <div class="kpi">
     <div class="label">Margem de contribuição</div>
-    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">39,8%</span></div>
-    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">43,6%</span></div>
-    <div class="diff">LTP02 com margem <span class="pos">+3,8 p.p.</span> maior</div>
+    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">32,3%</span></div>
+    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">36,6%</span></div>
+    <div class="diff">LTP02 com margem <span class="pos">+4,3 p.p.</span> maior</div>
   </div>
   <div class="kpi">
     <div class="label">ROAS</div>
-    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">1,66x</span></div>
-    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">1,77x</span></div>
+    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">1,48x</span></div>
+    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">1,58x</span></div>
     <div class="diff">Ticket médio: LTP01 R$20,34 · LTP02 R$20,45</div>
   </div>
 </div>
@@ -131,7 +131,7 @@
       <div class="legend-item"><div class="dot d1"></div>LTP01</div>
       <div class="legend-item"><div class="dot d2"></div>LTP02</div>
     </div>
-    <h2>Investimento diário em tráfego (R$)</h2>
+    <h2>Investimento diário com imposto Meta (R$)</h2>
     <canvas id="chartGasto"></canvas>
   </div>
 </div>
@@ -149,7 +149,7 @@
           <th>Fat. Principal</th>
           <th>Fat. OB</th>
           <th>Fat. Total</th>
-          <th>Investimento</th>
+          <th>Investimento (c/ imp.)</th>
           <th>Lucro</th>
           <th>Margem</th>
           <th>ROAS</th>
@@ -173,7 +173,7 @@
           <th>Fat. Principal</th>
           <th>Fat. OB</th>
           <th>Fat. Total</th>
-          <th>Investimento</th>
+          <th>Investimento (c/ imp.)</th>
           <th>Lucro</th>
           <th>Margem</th>
           <th>ROAS</th>
@@ -192,14 +192,14 @@ const d1 = {
   ob:  [0,2,6,5,3,4,3,3,4,2,2,5,3,5,1,2],
   fp:  [326.16,271.80,434.88,416.76,344.28,362.40,489.24,380.52,380.73,253.68,326.16,507.36,449.18,471.12,289.92,253.68],
   fo:  [0,28.60,85.80,71.50,42.90,57.20,42.90,42.90,57.20,28.60,28.60,71.50,42.90,71.50,14.30,28.60],
-  gst: [256.97,258.93,266.88,217.22,275.45,229.84,251.87,263.81,265.05,187.34,273.16,292.50,264.93,264.50,228.06,218.74],
+  gst: [289.09,291.30,300.24,244.37,309.88,258.57,283.35,296.79,298.18,210.76,307.31,329.06,298.05,297.56,256.57,246.08],
 };
 const d2 = {
   vnd: [32,17,14,18,11,23,23,24,24,18,18,25,22,26,25,18],
   ob:  [3,6,2,4,3,4,3,2,4,5,2,5,3,3,6,1],
   fp:  [579.84,308.04,253.68,326.16,199.32,416.76,416.76,434.88,380.52,326.97,326.16,453.00,391.67,434.88,453.00,326.16],
   fo:  [43.08,105.40,40.32,65.08,58.56,73.60,50.68,32.54,57.20,71.50,28.60,71.50,42.90,42.90,85.80,14.30],
-  gst: [281.65,249.05,224.00,200.59,245.97,217.02,219.00,248.51,250.28,233.19,233.08,277.29,277.36,262.44,251.91,223.49],
+  gst: [316.86,280.18,252.00,225.66,276.72,244.15,246.38,279.57,281.57,262.34,262.22,311.95,312.03,295.25,283.40,251.43],
 };
 
 function enrich(d) {
