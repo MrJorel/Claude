@@ -63,25 +63,25 @@
     <div class="diff">LTP02 fatura <span class="pos">+R$ 239</span> a mais</div>
   </div>
   <div class="kpi">
-    <div class="label">Investimento total (c/ imposto)</div>
-    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">R$ 4.517</span></div>
-    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">R$ 4.382</span></div>
-    <div class="diff">Imposto Meta: LTP01 R$502 · LTP02 R$487</div>
-  </div>
-  <div class="kpi">
-    <div class="label">Lucro bruto</div>
-    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">R$ 2.155</span></div>
-    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">R$ 2.530</span></div>
-    <div class="diff">LTP02 lucra <span class="pos">+R$ 375</span> a mais</div>
+    <div class="label">Investimento em ads</div>
+    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">R$ 4.015</span></div>
+    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">R$ 3.895</span></div>
+    <div class="diff">c/ imposto Meta 12,5%: LTP01 R$4.517 · LTP02 R$4.382</div>
   </div>
   <div class="kpi">
     <div class="label">Margem de contribuição</div>
-    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">32,3%</span></div>
-    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">36,6%</span></div>
-    <div class="diff">LTP02 com margem <span class="pos">+4,3 p.p.</span> maior</div>
+    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">R$ 1.924</span></div>
+    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">R$ 2.257</span></div>
+    <div class="diff">LTP02 <span class="pos">+R$ 333</span> a mais · (fat - 11% imp. - ads)</div>
   </div>
   <div class="kpi">
-    <div class="label">ROAS</div>
+    <div class="label">% Margem de contribuição</div>
+    <div class="row"><span class="tag">LTP01</span><span class="val ltp1">28,8%</span></div>
+    <div class="row"><span class="tag">LTP02</span><span class="val ltp2">32,6%</span></div>
+    <div class="diff">LTP02 com margem <span class="pos">+3,8 p.p.</span> maior</div>
+  </div>
+  <div class="kpi">
+    <div class="label">ROAS (c/ imposto Meta)</div>
     <div class="row"><span class="tag">LTP01</span><span class="val ltp1">1,48x</span></div>
     <div class="row"><span class="tag">LTP02</span><span class="val ltp2">1,58x</span></div>
     <div class="diff">Ticket médio: LTP01 R$20,34 · LTP02 R$20,45</div>
@@ -92,10 +92,10 @@
 <div class="charts-grid">
   <div class="card full">
     <div class="legend">
-      <div class="legend-item"><div class="dot d1"></div>Lucro LTP01</div>
-      <div class="legend-item"><div class="dot d2"></div>Lucro LTP02</div>
+      <div class="legend-item"><div class="dot d1"></div>Margem LTP01</div>
+      <div class="legend-item"><div class="dot d2"></div>Margem LTP02</div>
     </div>
-    <h2>Lucro por dia (R$)</h2>
+    <h2>Margem de contribuição por dia (R$)</h2>
     <canvas id="chartLucro"></canvas>
   </div>
 
@@ -150,8 +150,8 @@
           <th>Fat. OB</th>
           <th>Fat. Total</th>
           <th>Investimento (c/ imp.)</th>
-          <th>Lucro</th>
-          <th>Margem</th>
+          <th>Margem (R$)</th>
+          <th>Margem (%)</th>
           <th>ROAS</th>
         </tr>
       </thead>
@@ -174,8 +174,8 @@
           <th>Fat. OB</th>
           <th>Fat. Total</th>
           <th>Investimento (c/ imp.)</th>
-          <th>Lucro</th>
-          <th>Margem</th>
+          <th>Margem (R$)</th>
+          <th>Margem (%)</th>
           <th>ROAS</th>
         </tr>
       </thead>
@@ -204,9 +204,11 @@ const d2 = {
 
 function enrich(d) {
   d.fat = d.fp.map((v,i) => +(v + d.fo[i]).toFixed(2));
-  d.luc = d.fat.map((v,i) => +(v - d.gst[i]).toFixed(2));
+  // Margem = fat - fat*0.11 - gasto_ads (sem imposto Meta)
+  d.luc = d.fat.map((v,i) => +(v - v*0.11 - d.gst[i]).toFixed(2));
   d.mar = d.fat.map((v,i) => v ? +((d.luc[i]/v)*100).toFixed(1) : 0);
-  d.roas= d.fat.map((v,i) => d.gst[i] ? +(v/d.gst[i]).toFixed(2) : 0);
+  // ROAS considera gasto + 12.5% imposto Meta
+  d.roas= d.fat.map((v,i) => d.gst[i] ? +(v/(d.gst[i]*1.125)).toFixed(2) : 0);
   return d;
 }
 enrich(d1); enrich(d2);
