@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — Identidade Visual Matheus Jorel</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bege: #F4EFE6;
+    --offwhite: #FAFAF8;
+    --preto: #111111;
+    --ambar: #F0A500;
+    --grafite: #555555;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #E8E3DA;
+    padding: 48px 32px;
+    color: var(--preto);
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--grafite);
+    margin-bottom: 20px;
+    margin-top: 56px;
+  }
+
+  .section-label:first-child { margin-top: 0; }
+
+  /* ─── LOGO CONCEPT ─── */
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .logo-box {
+    background: var(--bege);
+    border-radius: 16px;
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-box.dark {
+    background: var(--preto);
+  }
+
+  .vitruvian-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .logo-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--preto);
+    letter-spacing: -0.5px;
+  }
+
+  .logo-box.dark .logo-name { color: var(--offwhite); }
+
+  .logo-sub {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ambar);
+    margin-top: 4px;
+  }
+
+  /* ─── PALETA ─── */
+  .palette {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    width: 120px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .swatch-color {
+    height: 72px;
+  }
+
+  .swatch-info {
+    background: white;
+    padding: 10px 12px;
+  }
+
+  .swatch-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--preto);
+  }
+
+  .swatch-hex {
+    font-size: 10px;
+    color: var(--grafite);
+    margin-top: 2px;
+  }
+
+  /* ─── TIPOGRAFIA ─── */
+  .type-demo {
+    background: var(--bege);
+    border-radius: 16px;
+    padding: 32px 40px;
+  }
+
+  .type-title {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--preto);
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+
+  .type-title span { color: var(--ambar); }
+
+  .type-sub {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--grafite);
+    margin-bottom: 12px;
+  }
+
+  .type-body {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--grafite);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  .type-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ambar);
+    margin-bottom: 16px;
+  }
+
+  /* ─── CARROSSEL CAPA ─── */
+  .slides-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .slide {
+    width: 380px;
+    height: 380px;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  /* Capa */
+  .slide-capa {
+    background: var(--bege);
+    display: flex;
+    flex-direction: column;
+    padding: 28px;
+  }
+
+  .slide-capa-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ambar);
+    margin-bottom: 16px;
+  }
+
+  .slide-capa-photo {
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(135deg, #d4c9b5 0%, #c4b89f 100%);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grafite);
+    font-size: 12px;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-capa-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .slide-divider {
+    width: 100%;
+    height: 1px;
+    background: #D4CEBC;
+    margin-bottom: 16px;
+  }
+
+  .slide-capa-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--preto);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .slide-capa-title span { color: var(--ambar); }
+
+  .slide-capa-sub {
+    font-size: 11px;
+    color: var(--grafite);
+    font-weight: 500;
+    flex: 1;
+  }
+
+  /* Slide interno */
+  .slide-interno {
+    background: var(--offwhite);
+    display: flex;
+    flex-direction: column;
+    padding: 32px 28px;
+  }
+
+  .slide-numero {
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--ambar);
+    line-height: 1;
+    margin-bottom: 8px;
+    opacity: 0.15;
+    position: absolute;
+    right: 24px;
+    top: 20px;
+  }
+
+  .slide-interno-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ambar);
+    margin-bottom: 20px;
+  }
+
+  .slide-interno-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--preto);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .slide-interno-title span { color: var(--ambar); }
+
+  .slide-interno-body {
+    font-size: 13px;
+    color: var(--grafite);
+    line-height: 1.75;
+    flex: 1;
+  }
+
+  .slide-interno-body strong {
+    color: var(--preto);
+    font-weight: 600;
+  }
+
+  /* Slide escuro */
+  .slide-dark {
+    background: var(--preto);
+    display: flex;
+    flex-direction: column;
+    padding: 32px 28px;
+  }
+
+  .slide-dark-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ambar);
+    margin-bottom: 20px;
+  }
+
+  .slide-dark-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--offwhite);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    flex: 1;
+  }
+
+  .slide-dark-title span { color: var(--ambar); }
+
+  .slide-dark-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ambar);
+    color: var(--preto);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 8px;
+    width: fit-content;
+  }
+
+  /* Rodapé dos slides */
+  .slide-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #D4CEBC;
+  }
+
+  .slide-dark .slide-footer {
+    border-top-color: #2a2a2a;
+  }
+
+  .slide-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ambar);
+    border: 2px solid var(--ambar);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .handle {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--grafite);
+  }
+
+  .slide-dark .handle { color: #888; }
+
+  .arrow {
+    font-size: 16px;
+    color: var(--ambar);
+    font-weight: 900;
+  }
+
+  /* ─── THUMBNAIL YOUTUBE ─── */
+  .thumb {
+    width: 560px;
+    height: 315px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    background: var(--preto);
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .thumb-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  }
+
+  .thumb-accent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background: var(--ambar);
+    clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%);
+    opacity: 0.08;
+  }
+
+  .thumb-photo-area {
+    position: absolute;
+    right: 24px;
+    bottom: 0;
+    width: 180px;
+    height: 260px;
+    background: linear-gradient(180deg, transparent 0%, #2a2a2a 100%);
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+    font-size: 12px;
+  }
+
+  .thumb-content {
+    position: relative;
+    z-index: 2;
+    padding: 28px 32px;
+    max-width: 340px;
+  }
+
+  .thumb-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ambar);
+    margin-bottom: 12px;
+  }
+
+  .thumb-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .thumb-title span { color: var(--ambar); }
+
+  .thumb-sub {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+  }
+
+  /* ─── THUMBNAIL BEGE ─── */
+  .thumb-bege {
+    background: var(--bege);
+  }
+
+  .thumb-bege .thumb-bg {
+    background: var(--bege);
+  }
+
+  .thumb-bege .thumb-title { color: var(--preto); }
+  .thumb-bege .thumb-sub { color: var(--grafite); }
+
+  .thumb-bege .thumb-photo-area {
+    background: linear-gradient(180deg, transparent 0%, #e0dbd0 100%);
+    color: #b0a898;
+  }
+
+  /* ─── PERFIL BIO ─── */
+  .bio-card {
+    background: var(--bege);
+    border-radius: 20px;
+    padding: 32px 36px;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .bio-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .bio-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--ambar);
+    border: 3px solid var(--ambar);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .bio-info {}
+
+  .bio-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--preto);
+  }
+
+  .bio-handle {
+    font-size: 12px;
+    color: var(--ambar);
+    font-weight: 600;
+  }
+
+  .bio-divider {
+    width: 100%;
+    height: 1px;
+    background: #D4CEBC;
+  }
+
+  .bio-text {
+    font-size: 13px;
+    color: var(--grafite);
+    line-height: 1.75;
+  }
+
+  .bio-text strong { color: var(--preto); font-weight: 600; }
+
+  .bio-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .bio-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ambar);
+    background: rgba(240,165,0,0.1);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ─── VITRUVIAN ICON SVG ─── */
+  .vitruvian {
+    color: var(--ambar);
+  }
+
+  .vitruvian-dark {
+    color: var(--ambar);
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- LOGO -->
+  <div class="section-label">Logo — versão final do designer</div>
+  <div style="display:flex; flex-direction:column; gap:16px; max-width:700px;">
+
+    <!-- Versão clara: metade superior -->
+    <div style="border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+      <div style="height:220px;
+                  background-image: url('../../../../marca/matheus-jorel/logo-preview.png');
+                  background-size: 100% auto;
+                  background-position: top center;
+                  background-repeat: no-repeat;">
+      </div>
+      <div style="background:#F4EFE6; padding:10px 20px; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#555;">Versão clara</div>
+    </div>
+
+    <!-- Versão escura: metade inferior -->
+    <div style="border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.12);">
+      <div style="height:220px;
+                  background-image: url('../../../../marca/matheus-jorel/logo-preview.png');
+                  background-size: 100% auto;
+                  background-position: bottom center;
+                  background-repeat: no-repeat;">
+      </div>
+      <div style="background:#111; padding:10px 20px; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#555;">Versão escura</div>
+    </div>
+
+  </div>
+
+  <!-- PALETA -->
+  <div class="section-label">Paleta de cores</div>
+  <div class="palette">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F4EFE6;"></div>
+      <div class="swatch-info"><div class="swatch-name">Bege Areia</div><div class="swatch-hex">#F4EFE6</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#111111;"></div>
+      <div class="swatch-info"><div class="swatch-name">Preto Forte</div><div class="swatch-hex">#111111</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F0A500;"></div>
+      <div class="swatch-info"><div class="swatch-name">Âmbar</div><div class="swatch-hex">#F0A500</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FAFAF8; border: 1px solid #e0dbd0;"></div>
+      <div class="swatch-info"><div class="swatch-name">Off-white</div><div class="swatch-hex">#FAFAF8</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#555555;"></div>
+      <div class="swatch-info"><div class="swatch-name">Cinza Grafite</div><div class="swatch-hex">#555555</div></div>
+    </div>
+  </div>
+
+  <!-- TIPOGRAFIA -->
+  <div class="section-label">Tipografia — Poppins</div>
+  <div class="type-demo">
+    <div class="type-tag">Webinar · Funil · Resultado</div>
+    <div class="type-title">Por que seu webinar<br>não <span>converte</span></div>
+    <div class="type-sub">A resposta que ninguém te deu ainda</div>
+    <div class="type-body">Você monta o slide, prepara o pitch, roda o evento — e a taxa de conversão não sai do lugar. O problema quase nunca é o produto. É a estrutura.</div>
+  </div>
+
+  <!-- CARROSSEIS -->
+  <div class="section-label">Carrosseis — Instagram</div>
+  <div class="slides-row">
+
+    <!-- Capa -->
+    <div class="slide slide-capa">
+      <div class="slide-capa-tag">Webinar</div>
+      <div class="slide-capa-photo"><img src="fotos/estudio-retrato-pensativo.jpg" alt="Matheus Jorel"></div>
+      <div class="slide-divider"></div>
+      <div class="slide-capa-title">Por que seu webinar<br>não <span>converte</span></div>
+      <div class="slide-capa-sub">5 erros que eu vi em 10 anos de mercado</div>
+      <div class="slide-footer">
+        <div class="slide-footer-left">
+          <div class="avatar">MJ</div>
+          <span class="handle">@matheus.jorel</span>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+
+    <!-- Slide interno claro -->
+    <div class="slide slide-interno">
+      <span class="slide-numero">01</span>
+      <div class="slide-interno-tag">Erro #1</div>
+      <div class="slide-interno-title">Você vende antes<br>de <span>gerar valor</span></div>
+      <div class="slide-interno-body">
+        O webinar é um evento de confiança, não de pressão.<br><br>
+        <strong>Quem chega no pitch sem ter recebido nada primeiro,</strong> já está mentalmente na defensiva.<br><br>
+        Troca: dá antes. Exige depois.
+      </div>
+      <div class="slide-footer">
+        <div class="slide-footer-left">
+          <div class="avatar">MJ</div>
+          <span class="handle">@matheus.jorel</span>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+
+    <!-- Slide escuro -->
+    <div class="slide slide-dark">
+      <div class="slide-dark-tag">Conclusão</div>
+      <div class="slide-dark-title">Webinar bom<br>não é o mais<br><span>animado.</span><br>É o mais<br><span>estruturado.</span></div>
+      <div class="slide-dark-cta">Pega o checklist gratuito →</div>
+      <div class="slide-footer">
+        <div class="slide-footer-left">
+          <div class="avatar">MJ</div>
+          <span class="handle">@matheus.jorel</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- THUMBNAILS YOUTUBE -->
+  <div class="section-label">Thumbnails — YouTube</div>
+  <div style="display:flex; gap:24px; flex-wrap:wrap;">
+
+    <div class="thumb">
+      <div class="thumb-bg"></div>
+      <div class="thumb-accent"></div>
+      <div class="thumb-photo-area" style="background-image:url('fotos/palco-apresentando-sorrindo.jpg'); background-size:cover; background-position:center top;"></div>
+      <div class="thumb-content">
+        <div class="thumb-tag">Webinar</div>
+        <div class="thumb-title">Por que seu<br>webinar não<br><span>converte</span></div>
+        <div class="thumb-sub">mesmo com produto bom</div>
+      </div>
+    </div>
+
+    <div class="thumb thumb-bege">
+      <div class="thumb-bg"></div>
+      <div class="thumb-photo-area" style="background-image:url('fotos/palco-apresentando-gesto.jpg'); background-size:cover; background-position:center top;"></div>
+      <div class="thumb-content">
+        <div class="thumb-tag">Funil</div>
+        <div class="thumb-title">Como fiz<br><span>R$12k</span><br>em 7 dias</div>
+        <div class="thumb-sub">sem tráfego pago</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BIO / PERFIL -->
+  <div class="section-label">Bio — Instagram / LinkedIn</div>
+  <div class="bio-card">
+    <div class="bio-header">
+      <img class="bio-avatar" src="fotos/estudio-retrato-verde-olhando.jpg" alt="Matheus Jorel" style="object-fit:cover; object-position:center top;">
+      <div class="bio-info">
+        <div class="bio-name">Matheus Jorel</div>
+        <div class="bio-handle">@matheus.jorel</div>
+      </div>
+    </div>
+    <div class="bio-divider"></div>
+    <div class="bio-text">
+      Ajudo infoprodutores a <strong>vender entre lançamentos</strong> com webinar estruturado.<br><br>
+      Biólogo. 10 anos de mercado. Já estive em operações de <strong>8 dígitos</strong>.<br>
+      Falo direto, sem enrolação e sem jeitinho.
+    </div>
+    <div class="bio-tags">
+      <span class="bio-tag">Webinar</span>
+      <span class="bio-tag">Funil</span>
+      <span class="bio-tag">Infoprodutor</span>
+    </div>
+  </div>
+
+  <div style="height:48px;"></div>
+
+</body>
+</html>
