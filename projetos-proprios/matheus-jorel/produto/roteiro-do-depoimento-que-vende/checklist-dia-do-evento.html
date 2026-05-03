@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist do Dia do Evento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #ffffff;
+      color: #111;
+      padding: 48px 40px;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #F0A500;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #F0A500;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #111;
+      line-height: 1.2;
+    }
+
+    .header h1 span { color: #F0A500; }
+
+    .header p {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* Event info */
+    .event-info {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .event-info div {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .event-info label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #F0A500;
+    }
+
+    .event-info .blank {
+      border-bottom: 1px solid #ccc;
+      height: 22px;
+    }
+
+    /* Columns */
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-bottom: 0;
+    }
+
+    .block {
+      padding: 0 0 28px 0;
+      margin-bottom: 28px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .block.left { padding-right: 32px; border-right: 1px solid #eee; }
+    .block.right { padding-left: 32px; }
+
+    .block.full {
+      grid-column: 1 / -1;
+      padding-right: 0;
+      border-right: none;
+      padding-left: 0;
+    }
+
+    .block-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #F0A500;
+      margin-bottom: 14px;
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .box {
+      width: 15px;
+      height: 15px;
+      border: 1.5px solid #111;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Entrevistas */
+    .interviews {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .interview-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .interview-card .num {
+      font-size: 10px;
+      font-weight: 700;
+      color: #F0A500;
+      letter-spacing: 1px;
+    }
+
+    .interview-card .name-line {
+      border-bottom: 1px solid #ccc;
+      height: 20px;
+      font-size: 11px;
+      color: #999;
+    }
+
+    .interview-card .auth {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      color: #999;
+    }
+
+    .interview-card .mini-box {
+      width: 11px;
+      height: 11px;
+      border: 1.5px solid #111;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Fechamento */
+    .closing {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer p {
+      font-size: 11px;
+      color: #bbb;
+    }
+
+    .footer span {
+      font-size: 11px;
+      font-weight: 700;
+      color: #F0A500;
+    }
+
+    @media print {
+      body { padding: 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <span class="tag">Matheus Jorel</span>
+      <h1>Checklist do <span>Dia do Evento</span></h1>
+      <p>Imprima, leve junto com o guia e marque cada etapa conforme avança no dia.</p>
+    </div>
+
+    <!-- Info do evento -->
+    <div class="event-info">
+      <div>
+        <label>Evento</label>
+        <div class="blank"></div>
+      </div>
+      <div>
+        <label>Data</label>
+        <div class="blank"></div>
+      </div>
+      <div>
+        <label>Meta de entrevistas</label>
+        <div class="blank"></div>
+      </div>
+    </div>
+
+    <!-- Duas colunas -->
+    <div class="columns">
+
+      <div class="block left">
+        <div class="block-title">Antes de sair de casa</div>
+        <ul class="checklist">
+          <li><span class="box"></span> Microfone lapela</li>
+          <li><span class="box"></span> Câmera ou celular carregado</li>
+          <li><span class="box"></span> Carregador e bateria extra</li>
+          <li><span class="box"></span> Guias impressos (um por entrevista)</li>
+          <li><span class="box"></span> Autorizações impressas (uma por aluno)</li>
+          <li><span class="box"></span> Caneta</li>
+        </ul>
+      </div>
+
+      <div class="block right">
+        <div class="block-title">No evento</div>
+        <ul class="checklist">
+          <li><span class="box"></span> Identificou os alunos certos pra entrevistar</li>
+          <li><span class="box"></span> Definiu e montou o espaço de gravação</li>
+          <li><span class="box"></span> Testou áudio (gravou 30s e ouviu)</li>
+          <li><span class="box"></span> Testou imagem e luz</li>
+          <li><span class="box"></span> Fundo limpo e sem bagunça</li>
+          <li><span class="box"></span> Câmera posicionada ao seu lado</li>
+        </ul>
+      </div>
+
+      <!-- Entrevistas -->
+      <div class="block full">
+        <div class="block-title">Entrevistas realizadas</div>
+        <div class="interviews">
+          <div class="interview-card">
+            <div class="num">#1</div>
+            <div class="name-line"></div>
+            <div class="auth"><span class="mini-box"></span> Autorização</div>
+          </div>
+          <div class="interview-card">
+            <div class="num">#2</div>
+            <div class="name-line"></div>
+            <div class="auth"><span class="mini-box"></span> Autorização</div>
+          </div>
+          <div class="interview-card">
+            <div class="num">#3</div>
+            <div class="name-line"></div>
+            <div class="auth"><span class="mini-box"></span> Autorização</div>
+          </div>
+          <div class="interview-card">
+            <div class="num">#4</div>
+            <div class="name-line"></div>
+            <div class="auth"><span class="mini-box"></span> Autorização</div>
+          </div>
+          <div class="interview-card">
+            <div class="num">#5</div>
+            <div class="name-line"></div>
+            <div class="auth"><span class="mini-box"></span> Autorização</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ao final do dia -->
+      <div class="block full closing">
+        <div class="block-title">Ao final do dia</div>
+        <ul class="checklist">
+          <li><span class="box"></span> Subiu todos os vídeos brutos no Drive</li>
+          <li><span class="box"></span> Nomeou os arquivos com o nome do aluno e a data</li>
+          <li><span class="box"></span> Conferiu que todas as autorizações estão assinadas</li>
+          <li><span class="box"></span> Iniciou as transcrições (ou delegou pra quem vai fazer)</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Checklist do Dia do Evento</p>
+      <span>@matheus.jorel</span>
+    </div>
+
+  </div>
+</body>
+</html>

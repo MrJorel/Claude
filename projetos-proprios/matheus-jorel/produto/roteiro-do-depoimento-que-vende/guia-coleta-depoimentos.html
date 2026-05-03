@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia Para Coletar Bons Depoimentos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #F4EFE6;
+      color: #111;
+      padding: 48px 24px;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 3px solid #F0A500;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #F0A500;
+      margin-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: #111;
+    }
+
+    .header h1 span {
+      color: #F0A500;
+    }
+
+    .header p {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Fill-in box */
+    .fill-in {
+      background: #fff;
+      border-left: 4px solid #F0A500;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+
+    .fill-in p {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 12px;
+    }
+
+    .fill-in ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .fill-in ul li {
+      font-size: 13px;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fill-in ul li .label {
+      font-weight: 700;
+      color: #F0A500;
+      min-width: 100px;
+    }
+
+    .fill-in ul li .blank {
+      border-bottom: 1.5px solid #ccc;
+      flex: 1;
+      height: 20px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-number {
+      width: 32px;
+      height: 32px;
+      background: #F0A500;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-left: 44px;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .check-box {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #F0A500;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Questions */
+    .questions {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-left: 44px;
+    }
+
+    .questions li {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.6;
+      padding-left: 16px;
+      border-left: 2px solid #e0d9ce;
+    }
+
+    /* Quote block */
+    .quote-block {
+      background: #fff;
+      border-left: 4px solid #F0A500;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-left: 44px;
+      margin-top: 16px;
+    }
+
+    .quote-block .quote-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #F0A500;
+      margin-bottom: 8px;
+    }
+
+    .quote-block p {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* Tip block */
+    .tip {
+      background: #fdf6e3;
+      border: 1.5px dashed #F0A500;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-left: 44px;
+      margin-top: 12px;
+    }
+
+    .tip p {
+      font-size: 12px;
+      color: #7a6000;
+      line-height: 1.6;
+    }
+
+    .tip strong {
+      color: #F0A500;
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1.5px solid #e0d9ce;
+      margin: 40px 0;
+    }
+
+    /* Closing section */
+    .closing {
+      background: #111;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-top: 8px;
+    }
+
+    .closing .section-title {
+      color: #F0A500;
+      margin-bottom: 20px;
+    }
+
+    .closing .questions li {
+      color: #ddd;
+      border-left-color: #333;
+      margin-left: 0;
+    }
+
+    .closing .questions {
+      margin-left: 0;
+    }
+
+    .closing .quote-block {
+      margin-left: 0;
+      background: #1a1a1a;
+      border-left-color: #F0A500;
+    }
+
+    .closing .quote-block p {
+      color: #bbb;
+    }
+
+    .closing .quote-block .quote-label {
+      color: #F0A500;
+    }
+
+    .closing .tip {
+      margin-left: 0;
+      background: #1a1a1a;
+      border-color: #333;
+    }
+
+    .closing .tip p {
+      color: #888;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 48px;
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      padding-top: 24px;
+      border-top: 1.5px solid #e0d9ce;
+    }
+
+    .footer span {
+      color: #F0A500;
+      font-weight: 600;
+    }
+
+    @media print {
+      body {
+        padding: 24px;
+        background: #F4EFE6;
+      }
+      .container {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="tag">Matheus Jorel</div>
+      <h1>Guia Para Coletar<br><span>Bons Depoimentos</span></h1>
+      <p>Preencha os campos abaixo antes de começar. Siga as fases na ordem. Cada pergunta tem uma função.</p>
+    </div>
+
+    <!-- Fill in the blank -->
+    <div class="fill-in">
+      <p>Preencha antes de começar</p>
+      <ul>
+        <li>
+          <span class="label">[expert]</span>
+          <span class="blank"></span>
+        </li>
+        <li>
+          <span class="label">[nicho]</span>
+          <span class="blank"></span>
+        </li>
+        <li>
+          <span class="label">[resultado]</span>
+          <span class="blank"></span>
+        </li>
+        <li>
+          <span class="label">[movimento]</span>
+          <span class="blank"></span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Antes de ligar a câmera -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">✓</div>
+        <div class="section-title">Antes de Ligar a Câmera</div>
+      </div>
+      <ul class="checklist">
+        <li><span class="check-box"></span> Microfone ligado e testado</li>
+        <li><span class="check-box"></span> Câmera ligada e testada</li>
+        <li><span class="check-box"></span> Bateria OK ou carregando</li>
+        <li><span class="check-box"></span> Fundo limpo e sem bagunça</li>
+        <li><span class="check-box"></span> Gravou 30 segundos de teste e conferiu áudio e imagem</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Acordos -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">0</div>
+        <div class="section-title">Acordos com o Aluno</div>
+      </div>
+      <div class="quote-block" style="margin-left: 44px;">
+        <div class="quote-label">Fale isso antes de começar, olho no olho</div>
+        <p>"Esquece a câmera. Qualquer coisa que você não quiser que seja dito, é só avisar. Não tem resposta certa nem errada aqui. O que vai fazer esse material ficar bom é ele ser verdadeiro. A gente quer conhecer sua história de verdade. Combinado?"</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Fase 1 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">1</div>
+        <div class="section-title">Quem é Você</div>
+      </div>
+      <ul class="questions">
+        <li>Qual é o seu nome, sua idade e de onde você é?</li>
+        <li>O que você fazia antes de entrar no mundo do <strong>[nicho]</strong>?</li>
+      </ul>
+    </div>
+
+    <!-- Fase 2 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">2</div>
+        <div class="section-title">Como Chegou Aqui</div>
+      </div>
+      <ul class="questions">
+        <li>O que te levou pro mundo do <strong>[nicho]</strong>? O que aconteceu pra você decidir trabalhar com isso?</li>
+        <li>Por que o <strong>[nicho]</strong> e não outra coisa?</li>
+      </ul>
+    </div>
+
+    <!-- Fase 3 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">3</div>
+        <div class="section-title">Como Conheceu o [expert]</div>
+      </div>
+      <ul class="questions">
+        <li>Como você conheceu o <strong>[expert]</strong>?</li>
+        <li>Por que você decidiu dar um voto de confiança nele?</li>
+        <li>Ficou desconfiado em algum momento?</li>
+        <li>Como foi o processo de decidir comprar? Você tinha todo o dinheiro?</li>
+      </ul>
+    </div>
+
+    <!-- Fase 4 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">4</div>
+        <div class="section-title">A Jornada até o Primeiro Resultado</div>
+      </div>
+      <ul class="questions">
+        <li>Como estava sua vida quando você entrou no curso?</li>
+        <li>Tinha tempo pra estudar? Foi fácil ou difícil no começo?</li>
+        <li>Dizem que <strong>[o resultado]</strong> a gente nunca esquece. O que você estava fazendo quando aconteceu? Me conta essa história. O que você sentiu?</li>
+      </ul>
+      <div class="tip">
+        <p><strong>Se a resposta for rasa:</strong> "Me fala os 3 melhores momentos que o [nicho] te proporcionou." Depois: "Por que esses foram os mais especiais pra você? O que eles significam?"</p>
+      </div>
+    </div>
+
+    <!-- Fase 5 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">5</div>
+        <div class="section-title">Resultados até Hoje</div>
+      </div>
+      <ul class="questions">
+        <li>Desde que você se tornou aluno do <strong>[expert]</strong>, quanto você já conquistou até hoje?</li>
+        <li>O que essa conquista representa pra você?</li>
+      </ul>
+    </div>
+
+    <!-- Fase 6 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">6</div>
+        <div class="section-title">O que Esse Mundo Representa</div>
+      </div>
+      <ul class="questions">
+        <li>Qual foi a coisa mais legal que o <strong>[nicho]</strong> te proporcionou?</li>
+        <li>O que o <strong>[nicho]</strong> significa pra você hoje?</li>
+      </ul>
+    </div>
+
+    <!-- Fase 7 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">7</div>
+        <div class="section-title">O que Você Diria pra Quem Está na Dúvida</div>
+      </div>
+      <ul class="questions">
+        <li>O que você diria pra quem está em dúvida se entra no <strong>[nicho]</strong> ou não?</li>
+        <li>O que você diria pra quem já quer entrar no <strong>[nicho]</strong> mas está em dúvida se torna aluno do <strong>[expert]</strong>?</li>
+        <li>Agora manda uma mensagem direta pro <strong>[expert]</strong>. Fala o que ele significa pra você.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Fechamento -->
+    <div class="closing">
+      <div class="section-header">
+        <div class="section-number" style="background: #F0A500;">★</div>
+        <div class="section-title">Fechamento</div>
+      </div>
+
+      <div class="quote-block">
+        <div class="quote-label">Peça pro aluno falar assim — mostra primeiro como você faria</div>
+        <p>"Meu nome é [nome do aluno] e eu [faço parte do movimento / sou um improvável / frase do movimento do expert]"</p>
+      </div>
+
+      <br>
+
+      <ul class="questions" style="margin-left: 0;">
+        <li style="color: #ddd; border-left-color: #333;">Você autoriza a gente a usar esse material para fins didáticos e promocionais?</li>
+      </ul>
+
+      <div class="tip">
+        <p><strong>Obrigatório.</strong> Não encerre sem essa autorização.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Guia Para Coletar Bons Depoimentos &nbsp;·&nbsp; <span>@matheus.jorel</span></p>
+    </div>
+
+  </div>
+</body>
+</html>
