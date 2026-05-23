@@ -1,18 +1,15 @@
 """
-zouti_sheets.py — Busca vendas aprovadas de ontem na Zouti e atualiza Google Sheets
+zouti_sheets.py — Busca vendas e faturamento da Zouti e atualiza Google Sheets (MAT09)
 
-Fluxo:
-1. Login no Zouti via Playwright
-2. Para cada conta (LBR e Wizoom), busca pedidos PAID do dia anterior via API
-3. Conta vendas por produto (principal + orderbumps)
-4. Escreve na coluna do dia correto na planilha
-
-Execução: python3 zouti_sheets.py
-           python3 zouti_sheets.py --date 2026-04-04  (forçar data específica)
+Uso:
+  python3 zouti_sheets.py                        → roda para ontem
+  python3 zouti_sheets.py --date 2026-05-22      → data específica
+  python3 zouti_sheets.py --dry-run              → mostra os dados sem gravar
+  python3 zouti_sheets.py --explore              → mostra estrutura de um pedido (pra debugar campos)
 """
 
-import os, sys, time, json, argparse
-from datetime import date, timedelta
+import os, sys, time, json, argparse, urllib.parse, urllib.request, urllib.error
+from datetime import date, timedelta, datetime
 from collections import defaultdict
 
 sys.path.insert(0, '/Users/matheusjorel/Library/Python/3.9/lib/python/site-packages')
@@ -25,56 +22,29 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
 
 ZOUTI_EMAIL    = os.getenv('ZOUTI_EMAIL')
 ZOUTI_PASSWORD = os.getenv('ZOUTI_PASSWORD')
+SPREADSHEET_ID = os.getenv('SPREADSHEET_LBR')
+ACCOUNT_ID     = 'acc_xhhpimoyb18g139fen6brn'
+SHEET_TAB      = 'MAT | 09- Junho'
+TOKEN_FILE     = os.path.join(os.path.dirname(__file__), 'token.json')
 
-ACCOUNTS = {
-    'lbr':    'acc_xhhpimoyb18g139fen6brn',
-    'wizoom': 'acc_1idr3k8zzv9480cah4d50z',
-}
-
-SPREADSHEETS = {
-    'lbr':    os.getenv('SPREADSHEET_LBR'),
-    'wizoom': os.getenv('SPREADSHEET_WIZOOM'),
-}
-
-SHEET_TABS = {
-    'lbr':    'MAT | 08- Abril',
-    'wizoom': 'IEA | 02 - Abril',
-}
-
-SHEET_IDS = {
-    'lbr':    1799837654,
-    'wizoom': 10554169,
-}
-
-# Produtos do funil (nome exato como aparece na Zouti)
+# Nomes exatos dos produtos na Zouti (confirmar com --explore se mudar de edição)
 PRODUCTS = {
-    'lbr': {
-        'main':  'Imersão Mestres da Audiência Trabalhista | 8º Edição',
-        'ob1':   'Imersão Mestres da Audiência Trabalhista | 8º Edição - Conteúdo em Formato de Aulas',
-        'ob2':   'Ônus da Prova',
-    },
-    'wizoom': {
-        'main': 'Imersão Estética Automotiva 30K | 2ª Edição',
-        'ob1':  'Imersão Estética Automotiva 30K | 2º Edição - Conteúdo em Formato de Aula',
-        'ob2':  'Guia do Atendimento Magnético',
-    },
+    'main': 'Imersão Mestres da Audiência Trabalhista | 9ª Edição',
+    'ob1':  'Imersão Mestres da Audiência Trabalhista | 9ª Edição - Conteúdo em Formato de Aulas',
+    'ob2':  'Ônus da Prova',
 }
 
-# Linhas na planilha (1-based) para cada produto
-SHEET_ROWS = {
-    'lbr': {
-        'main': 26,  # # Venda Real Produto Principal
-        'ob1':  36,  # # Venda Real ORDERBUMP #1
-        'ob2':  37,  # # Venda Real ORDERBUMP #2
-    },
-    'wizoom': {
-        'main': 26,
-        'ob1':  36,
-        'ob2':  37,
-    },
+# Linhas na planilha (1-based)
+ROWS = {
+    'venda_main': 26,
+    'venda_ob1':  36,
+    'venda_ob2':  37,
+    'fat_main':   41,
+    'fat_ob1':    42,
+    'fat_ob2':    43,
 }
 
-# ── Zouti API ─────────────────────────────────────────────────────────────────
+# ── Zouti: login e pedidos ─────────────────────────────────────────────────────
 
 def login(page):
     page.goto('https://dashboard.zouti.com.br/login')
@@ -87,13 +57,17 @@ def login(page):
     page.wait_for_selector('button:has-text("Vendas")', timeout=20000)
     time.sleep(1)
 
-def get_orders(page, account_id, date_str):
-    """Busca todos os pedidos PAID de uma data (com paginação)."""
+def navigate_to_account(page):
+    page.goto(f'https://dashboard.zouti.com.br/{ACCOUNT_ID}/dashboard/infoproduct/sales/orders')
+    time.sleep(2)
+
+def fetch_orders(page, date_str):
+    """Busca todos os pedidos PAID de uma data com paginação."""
     all_orders = []
     current_page = 1
 
     while True:
-        url = (f'https://apiv1.zouti.com.br/v1/accounts/{account_id}/orders'
+        url = (f'https://apiv1.zouti.com.br/v1/accounts/{ACCOUNT_ID}/orders'
                f'?page={current_page}&per_page=100&start_date={date_str}&end_date={date_str}&status=PAID')
 
         data = page.evaluate(f"""async () => {{
@@ -101,17 +75,17 @@ def get_orders(page, account_id, date_str):
                 credentials: 'include',
                 headers: {{
                     'Content-Type': 'application/json',
-                    'x-zouti-account': '{account_id}'
+                    'x-zouti-account': '{ACCOUNT_ID}'
                 }}
             }});
             return await r.json();
         }}""")
 
         if 'object' not in data:
-            print(f"  Erro na API: {data}")
+            print(f"  Erro na API Zouti: {data}")
             break
 
-        meta = data['object']
+        meta   = data['object']
         orders = meta.get('data', [])
         all_orders.extend(orders)
 
@@ -122,63 +96,62 @@ def get_orders(page, account_id, date_str):
 
     return all_orders
 
-def count_products(orders, product_map):
-    """Conta vendas por tipo de produto."""
-    counts = defaultdict(int)
+def aggregate(orders):
+    """Retorna contagem e faturamento líquido por produto."""
+    vendas = defaultdict(int)
+    fat    = defaultdict(float)
+
     for order in orders:
         for product in order.get('products', []):
             name = product.get('name', '').strip()
-            for key, expected_name in product_map.items():
-                if name.lower() == expected_name.lower().strip():
-                    counts[key] += 1
-    return counts
+            for key, expected in PRODUCTS.items():
+                if name.lower() == expected.lower():
+                    vendas[key] += 1
+                    # Faturamento líquido: preferir net_amount, fallback para amount ou total
+                    net = (
+                        product.get('net_amount')
+                        or product.get('net_value')
+                        or product.get('amount_net')
+                    )
+                    if net is None:
+                        # Tenta no nível do pedido se não tiver no produto
+                        net = order.get('net_amount') or order.get('net_value') or 0
+                    fat[key] += float(net or 0)
+
+    return vendas, fat
 
 # ── Google Sheets ─────────────────────────────────────────────────────────────
 
-def get_sheets_service():
-    """Retorna cliente autenticado do Google Sheets."""
-    # Usar o google-auth com Application Default Credentials ou token OAuth salvo
-    # Por enquanto usa o token do MCP server que já está configurado
-    import subprocess, json as _json
+def load_token():
+    """Carrega token OAuth do token.json gerado pelo auth_sheets.py."""
+    if not os.path.exists(TOKEN_FILE):
+        print(f"Token não encontrado em {TOKEN_FILE}.")
+        print("Rode primeiro: python3 auth_sheets.py")
+        return None
 
-    # Tenta pegar o token do servidor MCP em execução
-    try:
-        result = subprocess.run(
-            ['node', '-e', '''
-                const fs = require('fs');
-                const paths = [
-                    process.env.HOME + '/.config/google-sheets-mcp/tokens.json',
-                    process.env.HOME + '/.google-sheets-mcp/tokens.json',
-                    '/tmp/google-sheets-tokens.json'
-                ];
-                for (const p of paths) {
-                    if (fs.existsSync(p)) {
-                        const t = JSON.parse(fs.readFileSync(p));
-                        console.log(JSON.stringify(t));
-                        process.exit(0);
-                    }
-                }
-                console.log("{}");
-            '''],
-            capture_output=True, text=True, timeout=5
-        )
-        tokens = _json.loads(result.stdout.strip() or '{}')
-        if tokens.get('access_token'):
-            return tokens['access_token']
-    except:
-        pass
-    return None
+    sys.path.insert(0, '/Users/matheusjorel/Library/Python/3.9/lib/python/site-packages')
+    from google.oauth2.credentials import Credentials
+    from google.auth.transport.requests import Request
 
-def find_date_column(page_data, target_date):
-    """Encontra a coluna (índice 0-based) correspondente a uma data nas linhas de header."""
-    # target_date no formato 'YYYY-MM-DD'
-    from datetime import datetime
+    creds = Credentials.from_authorized_user_file(
+        TOKEN_FILE,
+        scopes=['https://www.googleapis.com/auth/spreadsheets']
+    )
+
+    if creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+        with open(TOKEN_FILE, 'w') as f:
+            f.write(creds.to_json())
+
+    return creds.token
+
+def find_date_column(grid, target_date):
+    """Encontra o índice (0-based) da coluna com a data alvo."""
     target = datetime.strptime(target_date, '%Y-%m-%d')
 
-    for row in page_data:
+    for row in grid:
         for i, cell in enumerate(row):
             cell_str = str(cell).strip()
-            # Tenta parsear como data no formato DD/MM ou DD/MM/YYYY
             for fmt in ['%d/%m/%Y', '%d/%m', '%d-%m-%Y', '%d-%m']:
                 try:
                     parsed = datetime.strptime(cell_str, fmt)
@@ -190,146 +163,128 @@ def find_date_column(page_data, target_date):
                     pass
     return None
 
-def update_sheet(access_token, spreadsheet_id, sheet_tab, row, col_index, value):
-    """Atualiza uma célula na planilha."""
-    import urllib.request, urllib.error
-
-    # Converte índice de coluna para letra A1
-    col_letter = ''
+def col_letter(col_index):
+    """Converte índice 0-based para letra de coluna (A, B, ..., AA, AB, ...)."""
+    letter = ''
     n = col_index + 1
     while n > 0:
-        n, remainder = divmod(n - 1, 26)
-        col_letter = chr(65 + remainder) + col_letter
+        n, rem = divmod(n - 1, 26)
+        letter = chr(65 + rem) + letter
+    return letter
 
-    range_notation = f"'{sheet_tab}'!{col_letter}{row}"
-    url = f"https://sheets.googleapis.com/v4/spreadsheets/{spreadsheet_id}/values/{urllib.parse.quote(range_notation)}?valueInputOption=USER_ENTERED"
+def read_range(access_token, range_notation):
+    url = (f'https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/'
+           f'{urllib.parse.quote(range_notation)}')
+    req = urllib.request.Request(url)
+    req.add_header('Authorization', f'Bearer {access_token}')
+    with urllib.request.urlopen(req) as resp:
+        return json.loads(resp.read()).get('values', [])
 
+def write_cell(access_token, range_notation, value):
+    url = (f'https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/'
+           f'{urllib.parse.quote(range_notation)}?valueInputOption=USER_ENTERED')
     body = json.dumps({'values': [[value]]}).encode()
     req = urllib.request.Request(url, data=body, method='PUT')
     req.add_header('Authorization', f'Bearer {access_token}')
     req.add_header('Content-Type', 'application/json')
-
     try:
         with urllib.request.urlopen(req) as resp:
             return json.loads(resp.read())
     except urllib.error.HTTPError as e:
         return {'error': e.read().decode()}
 
-# ── Busca token OAuth ─────────────────────────────────────────────────────────
-
-def find_oauth_token():
-    """Procura token OAuth salvo pelo MCP server do Google Sheets."""
-    import glob
-    paths = glob.glob(os.path.expanduser('~/.config/**/tokens*.json'), recursive=True)
-    paths += glob.glob(os.path.expanduser('~/.google*/**/*.json'), recursive=True)
-    paths += glob.glob('/tmp/google*.json')
-
-    for p in paths:
-        try:
-            with open(p) as f:
-                data = json.load(f)
-            if isinstance(data, dict) and data.get('access_token'):
-                print(f"  Token encontrado em: {p}")
-                return data['access_token']
-        except:
-            pass
-
-    return None
-
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--date', help='Data no formato YYYY-MM-DD (padrão: ontem)')
-    parser.add_argument('--dry-run', action='store_true', help='Não escreve na planilha')
+    parser.add_argument('--date',    help='Data no formato YYYY-MM-DD (padrão: ontem)')
+    parser.add_argument('--dry-run', action='store_true', help='Mostra os dados sem gravar na planilha')
+    parser.add_argument('--explore', action='store_true', help='Mostra a estrutura de um pedido (debug)')
     args = parser.parse_args()
 
     target_date = args.date or (date.today() - timedelta(days=1)).strftime('%Y-%m-%d')
-    print(f"Data alvo: {target_date}")
-    print(f"Dry run: {args.dry_run}\n")
-
-    # Buscar token do Google Sheets
-    access_token = find_oauth_token()
-    if not access_token and not args.dry_run:
-        print("AVISO: Token do Google Sheets não encontrado. Certifique-se que o servidor MCP está rodando.")
-        print("Continuando em modo dry-run...")
-        args.dry_run = True
-
-    results = {}
+    print(f"Data: {target_date}")
+    if args.dry_run:  print("Modo: dry-run (sem gravar)")
+    if args.explore:  print("Modo: explore (mostra estrutura dos pedidos)")
+    print()
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_context().new_page()
+        page    = browser.new_context().new_page()
 
-        print("Fazendo login no Zouti...")
+        print("Fazendo login na Zouti...")
         login(page)
-        print("Logado!\n")
+        navigate_to_account(page)
+        print("Logado.\n")
 
-        for client, account_id in ACCOUNTS.items():
-            print(f"── {client.upper()} ──")
+        print(f"Buscando pedidos PAID de {target_date}...")
+        orders = fetch_orders(page, target_date)
+        print(f"{len(orders)} pedido(s) encontrado(s)\n")
 
-            # Navegar para a conta
-            page.goto(f'https://dashboard.zouti.com.br/{account_id}/dashboard/infoproduct/sales/orders')
-            time.sleep(2)
+        if args.explore:
+            if orders:
+                print("── Estrutura do primeiro pedido ──")
+                print(json.dumps(orders[0], indent=2, ensure_ascii=False))
+                print("\n── Todos os produtos encontrados ──")
+                seen = set()
+                for o in orders:
+                    for prod in o.get('products', []):
+                        name = prod.get('name', '').strip()
+                        if name not in seen:
+                            seen.add(name)
+                            fields = {k: prod.get(k) for k in ['name','price','amount','net_amount','net_value','amount_net','total']}
+                            print(json.dumps(fields, ensure_ascii=False))
+            else:
+                print("Nenhum pedido encontrado para explorar.")
+            browser.close()
+            return
 
-            # Buscar pedidos
-            print(f"  Buscando pedidos de {target_date}...")
-            orders = get_orders(page, account_id, target_date)
-            print(f"  {len(orders)} pedidos encontrados")
-
-            # Contar por produto
-            counts = count_products(orders, PRODUCTS[client])
-            print(f"  Contagens: {dict(counts)}")
-            results[client] = counts
-
+        vendas, fat = aggregate(orders)
         browser.close()
 
-    print("\n── Resumo ──")
-    for client, counts in results.items():
-        print(f"\n{client.upper()}:")
-        for key, count in counts.items():
-            print(f"  {key}: {count}")
+    print("── Resultado ──")
+    for key in ['main', 'ob1', 'ob2']:
+        print(f"  {key}: {vendas[key]} vendas | R$ {fat[key]:.2f} faturamento líquido")
+    print()
 
     if args.dry_run:
-        print("\n[Dry run — planilha não atualizada]")
+        print("[dry-run] Nada gravado.")
         return
 
-    # Atualizar planilhas
-    print("\n── Atualizando planilhas ──")
-    import urllib.parse
+    # Autenticação Sheets
+    access_token = load_token()
+    if not access_token:
+        return
 
-    for client, counts in results.items():
-        if not any(counts.values()):
-            print(f"  {client}: sem vendas, pulando")
-            continue
+    # Descobrir coluna da data
+    header_range = f"'{SHEET_TAB}'!A1:AQ8"
+    grid = read_range(access_token, header_range)
+    col_idx = find_date_column(grid, target_date)
+    if col_idx is None:
+        print(f"Data {target_date} não encontrada na planilha. Verifique se está dentro do intervalo do MAT09.")
+        return
 
-        spreadsheet_id = SPREADSHEETS[client]
-        sheet_tab      = SHEET_TABS[client]
-        rows           = SHEET_ROWS[client]
+    col = col_letter(col_idx)
+    print(f"Coluna da data {target_date}: {col} (índice {col_idx})\n")
 
-        # Ler a linha de datas para achar a coluna certa
-        range_url = f"https://sheets.googleapis.com/v4/spreadsheets/{spreadsheet_id}/values/{urllib.parse.quote(sheet_tab + '!A1:AQ5')}"
-        req = urllib.request.Request(range_url)
-        req.add_header('Authorization', f'Bearer {access_token}')
-        with urllib.request.urlopen(req) as resp:
-            grid = json.loads(resp.read()).get('values', [])
+    # Escrever células
+    cells = [
+        (ROWS['venda_main'], vendas['main'],  'Venda Principal'),
+        (ROWS['venda_ob1'],  vendas['ob1'],   'Venda OB1'),
+        (ROWS['venda_ob2'],  vendas['ob2'],   'Venda OB2'),
+        (ROWS['fat_main'],   fat['main'],     'Fat. Principal'),
+        (ROWS['fat_ob1'],    fat['ob1'],      'Fat. OB1'),
+        (ROWS['fat_ob2'],    fat['ob2'],      'Fat. OB2'),
+    ]
 
-        # Encontrar coluna da data
-        col_idx = find_date_column(grid, target_date)
-        if col_idx is None:
-            print(f"  {client}: data {target_date} não encontrada na planilha!")
-            continue
-
-        print(f"  {client}: coluna {col_idx} para {target_date}")
-
-        for key, count in counts.items():
-            row = rows.get(key)
-            if row and count > 0:
-                result = update_sheet(access_token, spreadsheet_id, sheet_tab, row, col_idx, count)
-                print(f"  {client} {key} (linha {row}): {count} → {result}")
+    print("── Gravando na planilha ──")
+    for row, value, label in cells:
+        cell_range = f"'{SHEET_TAB}'!{col}{row}"
+        result = write_cell(access_token, cell_range, value)
+        status = 'OK' if 'updatedCells' in result else f"ERRO: {result}"
+        print(f"  {label} ({cell_range}): {value} → {status}")
 
     print("\nConcluído!")
 
 if __name__ == '__main__':
-    import urllib.parse, urllib.request, urllib.error
     main()
