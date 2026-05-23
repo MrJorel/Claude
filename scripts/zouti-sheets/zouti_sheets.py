@@ -25,8 +25,8 @@ ACCOUNT_ID     = 'acc_xhhpimoyb18g139fen6brn'
 
 # Nomes exatos dos produtos na Zouti — confirmar com --explore se mudar de edição
 PRODUCTS = {
-    'main': 'Imersão Mestres da Audiência Trabalhista | 9ª Edição',
-    'ob1':  'Imersão Mestres da Audiência Trabalhista | 9ª Edição - Conteúdo em Formato de Aulas',
+    'main': 'Imersão Mestres da Audiência Trabalhista | 9º Edição',
+    'ob1':  'Imersão Mestres da Audiência Trabalhista | 9º Edição - Conteúdo em Formato de Aulas',
     'ob2':  'Ônus da Prova',
 }
 
