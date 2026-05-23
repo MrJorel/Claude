@@ -1,4 +1,4 @@
-# Processo de Otimização de Criativos — Funil Perpétuo
+# Processo de Teste de Criativos — Funil Perpétuo
 
 ## Variáveis de referência
 
