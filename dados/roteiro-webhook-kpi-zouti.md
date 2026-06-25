@@ -128,10 +128,19 @@ function doPost(e) {
 
     var items = order.items || [];
 
-    // CRÍTICO: items deve ser declarado ANTES de tentar extrair offerId
+    // A Zouti manda o offer ID no campo product_offer_id (não offer.id nem offer_id)
+    // Fallback completo para cobrir variações do payload entre versões da Zouti
     var offerId = (order.offer && order.offer.id)
                || order.offer_id
-               || (items[0] && ((items[0].offer && items[0].offer.id) || items[0].offer_id))
+               || order.product_offer_id
+               || (items[0] && (
+                    (items[0].offer && items[0].offer.id)
+                    || items[0].offer_id
+                    || items[0].product_offer_id
+                  ))
+               || (raw.offer && raw.offer.id)
+               || raw.offer_id
+               || raw.product_offer_id
                || '';
 
     var source = (TRAFEGO_OFFERS.indexOf(offerId) !== -1) ? 'TRAFEGO' : 'ORGANICO';
@@ -311,11 +320,31 @@ Pode acontecer se o script tinha bug no offer ID (ex: typo no ID) ou se a extra�
 
 **Diagnóstico**: checar a aba Logs — se `oferta=` está vazio, o `offerId` estava chegando como string vazia.
 
-**Causa mais comum**: o offer ID na Zouti não está em `order.offer.id` mas em `items[0].offer_id` ou `items[0].offer.id`. O script precisa do fallback:
+**Causa confirmada no MAT10 (jun/2026)**: a Zouti manda o offer ID no campo **`product_offer_id`**, não em `offer.id` nem `offer_id`. O payload não tem nenhuma chave `offer` — elas retornam `null`. O campo correto existe tanto em `order.product_offer_id` quanto em `items[0].product_offer_id`.
+
+**Como diagnosticar**: se o log mostrar `oferta=` vazio, adicionar temporariamente esse bloco logo após extrair o `offerId` vazio:
+```javascript
+if (!offerId) {
+  var diag = 'DIAG: raw_keys=[' + Object.keys(raw).join(',') + ']'
+           + ' items0_keys=[' + (items[0] ? Object.keys(items[0]).join(',') : 'sem_items') + ']';
+  logDetalhe = diag;
+}
+```
+O log vai mostrar todos os campos disponíveis no payload real — localizar onde está o offer ID e atualizar o fallback.
+
+**Fallback completo (usar sempre)**:
 ```javascript
 var offerId = (order.offer && order.offer.id)
            || order.offer_id
-           || (items[0] && ((items[0].offer && items[0].offer.id) || items[0].offer_id))
+           || order.product_offer_id
+           || (items[0] && (
+                (items[0].offer && items[0].offer.id)
+                || items[0].offer_id
+                || items[0].product_offer_id
+              ))
+           || (raw.offer && raw.offer.id)
+           || raw.offer_id
+           || raw.product_offer_id
            || '';
 ```
 
@@ -345,11 +374,12 @@ var offerId = (order.offer && order.offer.id)
 
 | Problema | Causa | Solução |
 |---|---|---|
-| `source=ORGANICO oferta=` no log | `offerId` chegando vazio — path errado no payload | Adicionar fallback para `items[0].offer_id` |
+| `source=ORGANICO oferta=` no log | `offerId` chegando vazio — campo é `product_offer_id`, não `offer_id` | Usar o fallback completo com `product_offer_id` em order, items[0] e raw |
 | Erro `Cannot read properties of undefined (reading 'postData')` | Clicou "Executar" no editor do Apps Script | Normal. Testar via "Reenviar webhook" na Zouti |
 | Fórmula SUMPRODUCT retorna 0 mesmo com dados no Vendas | Coluna N do Vendas não existe ou está vazia | Adicionar coluna source e preencher |
 | KPI mostra contagem errada (ex: 10 em vez de 9) | Célula diária hardcoded sobrepondo fórmula SUMPRODUCT | Remover hardcode — usar só fórmula |
 | Venda do ob1 standalone não entra na coluna E | Nome do produto no payload diferente do configurado no PRODUCTS | Comparar nome exato via log do Apps Script |
+| Fórmulas SUMPRODUCT do KPI mostram zero mesmo com dados na aba Vendas | Range começa na linha errada (ex: `$B$49` quando os dados estão nas linhas 2-48) | Fazer find-replace via API: substituir `$49:` por `$2:` em toda a aba KPI |
 | Datas como texto vs serial no Vendas | USER_ENTERED com locale pt_BR pode gravar como serial ou string | TEXT(B;"DD/MM") funciona nos dois casos |
 | Webhook não chega | URL desatualizada após novo deploy | Sempre usar URL da implantação ativa, não do editor |
 
